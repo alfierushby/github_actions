@@ -14,6 +14,7 @@ jobs:
 
     env:
       AWS_REGION: ${{ inputs.aws_region }}
+      PYTHONPATH: "."
 
     steps:
       - name: Check out code
@@ -31,4 +32,4 @@ jobs:
       
 
       - name: Run Pytest
-        run: pytest --disable-warnings --maxfail=1
+        run: pytest tests/ --disable-warnings --maxfail=1
