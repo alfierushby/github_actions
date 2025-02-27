@@ -25,7 +25,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.account_id }}:role/${{ secrets.role_name }}
-          aws-region: us-east-1
+          aws-region: eu-north-1
       
       - name: Download Docker Artifact
         uses: actions/download-artifact@v4
@@ -37,15 +37,13 @@ jobs:
         run: |
           docker load -i image.tar
       
-      - name: Login to Amazon ECR Public
-        id: login-ecr-public
+      - name: Login to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-        with:
-          registry-type: public
 
-      - name: Tag and Push Docker Image to Amazon ECR Public
+      - name: Tag and Push Docker Image to Amazon ECR
         env:
-          REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ${{ secrets.ecr_repo }}
           REGISTRY_ALIAS: ${{ secrets.ecr_alias }}
           IMAGE_TAG: ${{ github.sha }}
@@ -53,3 +51,4 @@ jobs:
           IMAGE_NAME=$(docker images --format "{{.Repository}}" | head -n 1)
           docker tag $IMAGE_NAME $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
           docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+          
