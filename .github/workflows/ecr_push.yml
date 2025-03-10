@@ -48,6 +48,6 @@ jobs:
           REGISTRY_ALIAS: ${{ secrets.ecr_alias }}
         run: |
           IMAGE_NAME=$(docker images --format "{{.Repository}}" | head -n 1)
-          docker tag $IMAGE_NAME $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+          docker tag $IMAGE_NAME $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:main
           docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:main
           
