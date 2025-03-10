@@ -46,9 +46,8 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ${{ secrets.ecr_repo }}
           REGISTRY_ALIAS: ${{ secrets.ecr_alias }}
-          IMAGE_TAG: ${{ github.sha }}
         run: |
           IMAGE_NAME=$(docker images --format "{{.Repository}}" | head -n 1)
           docker tag $IMAGE_NAME $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
-          docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:main
           
